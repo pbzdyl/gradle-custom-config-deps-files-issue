@@ -1,0 +1,4 @@
+rootProject.name = 'gradle-custom-config-deps-files-issue'
+
+include 'module-a'
+include 'dist'

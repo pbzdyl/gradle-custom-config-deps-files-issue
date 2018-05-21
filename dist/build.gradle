@@ -1,0 +1,32 @@
+configurations {
+  generatedFiles
+}
+
+dependencies {
+    generatedFiles project(path: ':module-a', configuration: 'moduleFiles')
+}
+
+task buildDist(type: Sync, dependsOn: [':module-a:generateModuleFiles']) {
+    doFirst {
+        println "Dist generated files"
+        println "${configurations.generatedFiles.files}"
+    }
+
+    destinationDir = file("${buildDir}/distribution")
+
+    // When buildDist task is run with into('generatedFiles') block commented out, doFirst will correctly
+    // print two files available in generatedFiles configuration:
+    // - dist-test/module-a/build/module-files/module-a-file-1.txt
+    // - dist-test/module-a/build/module-files/module-a-file-2.txt
+    //
+    // However, if the below block is uncommented, doFirst block above will print empty list of files available
+    // in generatedFiles configuration and no module-a-file-*.txt files will be included in dist-test/dist/build/distribution
+    // directory.
+//    into('generatedFiles') {
+//        from configurations.generatedFiles
+//    }
+
+    into('otherDir') {
+        from "${rootDir}/build.gradle"
+    }
+}

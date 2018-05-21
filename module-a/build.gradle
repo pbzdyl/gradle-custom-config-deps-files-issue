@@ -1,0 +1,21 @@
+apply plugin: "java"
+
+configurations {
+  moduleFiles
+}
+
+task generateModuleFiles << {
+    def outputDir = file("${buildDir}/module-files")
+    outputDir.mkdirs()
+
+    def moduleFile1 = file("${outputDir}/module-a-file-1.txt")
+    def moduleFile2 = file("${outputDir}/module-a-file-2.txt")
+
+    moduleFile1.write("Module A file 1")
+    moduleFile2.write("Module A file 2")
+
+    artifacts {
+        moduleFiles moduleFile1
+        moduleFiles moduleFile2
+    }
+}
